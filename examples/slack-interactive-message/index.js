@@ -1,12 +1,4 @@
-const { SlackBot } = require('bottender');
-const { createServer } = require('bottender/express');
-
-const bot = new SlackBot({
-  accessToken: '__FILL_YOUR_TOKEN_HERE__',
-  verificationToken: '__FILL_YOUR_VERIFICATION_TOKEN_HERE__',
-});
-
-bot.onEvent(async context => {
+module.exports = async function App(context) {
   if (context.event.isText && context.event.text === 'heyo') {
     // send a message with buttons and menu
     await context.postMessage({
@@ -96,15 +88,9 @@ bot.onEvent(async context => {
   } else if (context.event.isInteractiveMessage) {
     // check the action from button or menu
     console.log(context.event.action);
-    // check the callback_id
+    // check the callbackId
     await context.sendText(
       `I received your '${context.event.callbackId}' action`
     );
   }
-});
-
-const server = createServer(bot);
-
-server.listen(5000, () => {
-  console.log('server is running on 5000 port...');
-});
+};
